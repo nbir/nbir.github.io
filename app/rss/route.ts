@@ -1,8 +1,30 @@
 import { baseUrl } from 'app/sitemap'
-import { getBlogPosts } from 'app/blog/utils'
+import { getBlogPosts, getExternalPosts } from 'app/blog/utils'
+
+function getPostItemString(post) {
+  if (post.metadata.url) {
+    return `<item>
+              <title>${post.metadata.title}</title>
+              <link>${post.metadata.url}</link>
+              <description>${post.metadata.summary || ''}</description>
+              <pubDate>${new Date(
+                post.metadata.publishedAt
+              ).toUTCString()}</pubDate>
+            </item>`
+  } else {
+    return `<item>
+              <title>${post.metadata.title}</title>
+              <link>${baseUrl}/blog/${post.slug}</link>
+              <description>${post.metadata.summary || ''}</description>
+              <pubDate>${new Date(
+                post.metadata.publishedAt
+              ).toUTCString()}</pubDate>
+            </item>`
+  }
+}
 
 export async function GET() {
-  let allBlogs = await getBlogPosts()
+  let allBlogs = [...getBlogPosts(), ...getExternalPosts()]
 
   const itemsXml = allBlogs
     .sort((a, b) => {
@@ -11,17 +33,7 @@ export async function GET() {
       }
       return 1
     })
-    .map(
-      (post) =>
-        `<item>
-          <title>${post.metadata.title}</title>
-          <link>${baseUrl}/blog/${post.slug}</link>
-          <description>${post.metadata.summary || ''}</description>
-          <pubDate>${new Date(
-            post.metadata.publishedAt
-          ).toUTCString()}</pubDate>
-        </item>`
-    )
+    .map(getPostItemString)
     .join('\n')
 
   const rssFeed = `<?xml version="1.0" encoding="UTF-8" ?>
