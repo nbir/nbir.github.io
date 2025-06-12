@@ -51,7 +51,7 @@ export function Navbar() {
               className="transition-all hover:text-neutral-800 dark:hover:text-neutral-100 flex items-center py-1 px-2 m-1"
             >
               <ArrowIcon />
-              <p className="ml-2 h-7">publications</p>
+              <p className="ml-2 h-7">academia</p>
             </Link>
           </div>
         </nav>
