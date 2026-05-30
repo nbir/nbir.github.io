@@ -1,58 +1,67 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { formatDate, getBlogPosts, getExternalPosts } from 'app/blog/utils'
 import ArrowIcon from 'app/components/arrow-icon'
 
-function getPostLink(post) {
-  if (post.metadata.url) {
-    return <Link
-      key={post.slug}
-      className="flex flex-col space-y-1 mb-4"
-      target="_blank"
-      href={post.metadata.url}
+function PostCard({ post, href, external }) {
+  const image = post.metadata.image
+
+  return (
+    <Link
+      href={href}
+      target={external ? '_blank' : undefined}
+      className="flex flex-col mb-8"
     >
-      <div className="w-full flex flex-col md:flex-row space-x-0 md:space-x-2">
-        <p className="text-neutral-600 dark:text-neutral-400 w-[100px] tabular-nums">
-          {formatDate(post.metadata.publishedAt, false)}
-        </p>
-        <p className="text-neutral-900 dark:text-neutral-100 tracking-tight">
+      <div className="flex items-center gap-2 mb-1">
+        <p className="text-neutral-900 dark:text-neutral-100 font-medium tracking-tight">
           {post.metadata.title}
         </p>
-        <ArrowIcon />
+        {external && <ArrowIcon />}
       </div>
-    </Link>
-  } else {
-    return <Link
-      key={post.slug}
-      className="flex flex-col space-y-1 mb-4"
-      href={`/blog/${post.slug}`}
-    >
-      <div className="w-full flex flex-col md:flex-row space-x-0 md:space-x-2">
-        <p className="text-neutral-600 dark:text-neutral-400 w-[100px] tabular-nums">
-          {formatDate(post.metadata.publishedAt, false)}
+
+      <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-2">
+        {formatDate(post.metadata.publishedAt, false)}
+      </p>
+
+      {image ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="relative aspect-video">
+            <Image
+              src={image}
+              alt={post.metadata.title}
+              fill
+              className="object-cover rounded-lg"
+            />
+          </div>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            {post.metadata.summary}
+          </p>
+        </div>
+      ) : (
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          {post.metadata.summary}
         </p>
-        <p className="text-neutral-900 dark:text-neutral-100 tracking-tight">
-          {post.metadata.title}
-        </p>
-      </div>
+      )}
     </Link>
-  }
+  )
 }
 
 export function BlogPosts() {
-  let allBlogs = [...getBlogPosts(), ...getExternalPosts()]
+  const allBlogs = [...getBlogPosts(), ...getExternalPosts()]
+    .sort((a, b) =>
+      new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt) ? -1 : 1
+    )
 
   return (
     <div>
-      {allBlogs
-        .sort((a, b) => {
-          if (
-            new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
-          ) {
-            return -1
-          }
-          return 1
-        })
-        .map(getPostLink)}
+      {allBlogs.map((post) => (
+        <PostCard
+          key={post.slug}
+          post={post}
+          href={post.metadata.url || `/blog/${post.slug}`}
+          external={!!post.metadata.url}
+        />
+      ))}
     </div>
   )
 }
