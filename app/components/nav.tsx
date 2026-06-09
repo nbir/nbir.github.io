@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import ArrowIcon from 'app/components/arrow-icon'
 
 
 export function Navbar() {
@@ -32,7 +31,6 @@ export function Navbar() {
               href="https://www.linkedin.com/in/nibirbora"
               className="transition-all hover:text-neutral-800 dark:hover:text-neutral-100 flex items-center py-1 px-2 m-1"
             >
-              <ArrowIcon />
               <p className="ml-2 h-7">linkedin</p>
             </Link>
             <Link
@@ -41,7 +39,6 @@ export function Navbar() {
               href="/rss"
               className="transition-all hover:text-neutral-800 dark:hover:text-neutral-100 flex items-center py-1 px-2 m-1"
             >
-              <ArrowIcon />
               <p className="ml-2 h-7">rss</p>
             </Link>
             <Link
@@ -50,8 +47,14 @@ export function Navbar() {
               href="https://scholar.google.com/citations?user=24CLkbsAAAAJ"
               className="transition-all hover:text-neutral-800 dark:hover:text-neutral-100 flex items-center py-1 px-2 m-1"
             >
-              <ArrowIcon />
               <p className="ml-2 h-7">academia</p>
+            </Link>
+            <Link
+              key="/credly"
+              href="/credly"
+              className="transition-all hover:text-neutral-800 dark:hover:text-neutral-100 flex items-center py-1 px-2 m-1"
+            >
+              <p className="ml-2 h-7">credly</p>
             </Link>
           </div>
         </nav>
