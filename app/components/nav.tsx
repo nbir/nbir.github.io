@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 
 
@@ -14,16 +13,22 @@ export function Navbar() {
             <Link
               key="/"
               href="/"
-              className="transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2 m-1"
+              className="flex align-middle relative py-1 px-2 m-1"
             >
-              <Image
-                className="relative dark dark:invert"
-                src="/logo_100x100.png"
-                alt="Logo"
-                width={100}
-                height={100}
-                priority
-              />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100"
+                width="100"
+                height="100"
+                aria-label="Logo"
+                className="fill-black dark:fill-white hover:fill-[#8494FF] dark:hover:fill-[#8494FF] transition-colors"
+              >
+                <path
+                  d="M 10 27.5 L 10 32 14 32 L 18 32 18 54.5 L 18 77 27.5 77 L 37 77 37 59 L 37 41 45.5 41 L 54 41 54 59 L 54 77 63.5 77 L 73 77 73 50 L 73 23 41.5 23 L 10 23 10 27.5 M 81 72 L 81 77 86 77 L 91 77 91 72 L 91 67 86 67 L 81 67 81 72"
+                  stroke="none"
+                  fillRule="evenodd"
+                />
+              </svg>
             </Link>
             <Link
               key="linkedin"
